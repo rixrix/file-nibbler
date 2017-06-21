@@ -1,6 +1,6 @@
 {
   "name": "file-nibbler",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Uses [Async](https://caolan.github.io/async/) library called queue in processing hundreds, or thousands files and avoids the \"Too Many Open Files\" limit from your OS.",
   "main": "index.js",
   "dependencies": {
@@ -16,7 +16,10 @@
     "url": "git+https://github.com/rixrix/file-nibbler.git"
   },
   "keywords": [
-    "async", "io", "queue", "file"
+    "async",
+    "io",
+    "queue",
+    "file"
   ],
   "author": "Richard Sentino <richard@mindginative.com>",
   "license": "MIT",
