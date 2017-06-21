@@ -1,15 +1,27 @@
 {
-  "version": "1.0.0",
   "name": "file-nibbler",
-  "description": "",
-  "author": "Richard Sentino <richard@mindginative.com>",
-  "license": "MIT",
+  "version": "1.0.0",
+  "description": "Uses [Async](https://caolan.github.io/async/) library called queue in processing hundreds, or thousands files and avoids the \"Too Many Open Files\" limit from your OS.",
   "main": "index.js",
+  "dependencies": {
+    "async": "^2.4.1",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "async": "^2.4.1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rixrix/file-nibbler.git"
   },
-  "devDependencies": {}
+  "keywords": [
+    "async", "io", "queue", "file"
+  ],
+  "author": "Richard Sentino <richard@mindginative.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rixrix/file-nibbler/issues"
+  },
+  "homepage": "https://github.com/rixrix/file-nibbler#readme"
 }
