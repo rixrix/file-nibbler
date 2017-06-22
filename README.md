@@ -9,18 +9,25 @@ Rather than poking around your file systems file descriptor limit - let's get ri
 From a technical point of view the code is pretty small, just copy/paste and you are done however if you will
 trust me that I'm going to update and add more functionality at some stage, then do this.
 
-* npm install file-nibbler
-* yarn add file-nibbler
+```npm install file-nibbler```
+
+```yarn add file-nibbler```
 
 ## How To Use
 
-```
+```javascript
 var fileNibbler = require('file-nibbler').nibbler;
 var MILLION_FILES_DIR = 'full/path/to/my/files/';
 
-// your callback method for processing each file
+// This is your callback method for processing each file.
+// Note that it should return a Promise so that `file-nibbler` knows
+// when to call or process the next task from the queue
 function myFileProcessor(pathToFile) {
-
+    return new Promise(function(resolve, reject) {
+        // do some work on the file, and resolve it once done
+        //
+        resolve();
+    });
 }
 
 fileNibbler(MILLION_FILES_DIR, myFileProcessor)
@@ -39,7 +46,7 @@ fileNibbler(MILLION_FILES_DIR, myFileProcessor)
 
 ## Todo
 
-* better handling of async and sync processing of file/queue. Current use-case is sync-mode for my callback
+* ~~better handling of async and sync processing of file/queue. Current use-case is sync-mode for my callback~~
 * Add fancy transpiler
 * Add automated test - get the best and the sexiest
 * CI w/ Travis
