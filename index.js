@@ -43,17 +43,17 @@ function getFiles(pathToDir, filterBy) {
  *
  * @param {string} pathToDir - Path to the files folder
  * @param {requestCallback} callback - A user-defined function that gets called in the queue. It will receive the value of the array that's being processed in the queue, in this case the filename
- * @param {Object[]} option - optional parameters
- * @param {string} option[].filterBy - A regex-based flag for filtering out uneeded files otherwise returns all the files.
- * @param {number} option[].concurrencyLevel - Sets the queue concurrency level when processing files
+ * @param {Object[]} options - optionsal parameters
+ * @param {string} options[].filterBy - A regex-based flag for filtering out uneeded files otherwise returns all the files.
+ * @param {number} options[].concurrencyLevel - Sets the queue concurrency level when processing files
  * @returns {Object} promise - returns a Promise
  */
-exports.nibbler = function(pathToDir, option, callback) {
-    var _option = option || {};
+exports.nibbler = function(pathToDir, options, callback) {
+    var _options = options || {};
 
-    _option.concurrencyLevel = _option.concurrencyLevel || DEFAULT_CONCURRENCY_LEVEL;
-    _option.filterBy = _option.filterBy
-        ? new RegExp(_option.filterBy, "i")
+    _options.concurrencyLevel = _options.concurrencyLevel || DEFAULT_CONCURRENCY_LEVEL;
+    _options.filterBy = _options.filterBy
+        ? new RegExp(_options.filterBy, "i")
         : DEFAULT_FILE_FILTER;
 
     return new Promise(function(resolve, reject) {
@@ -71,10 +71,10 @@ exports.nibbler = function(pathToDir, option, callback) {
                 async.setImmediate(next, null);
             }
 
-        }, _option.concurrencyLevel);
+        }, _options.concurrencyLevel);
 
         // batch process the files by dropping it into an array
-        queue.push(getFiles(pathToDir, _option.filterBy).map(function(file) {
+        queue.push(getFiles(pathToDir, _options.filterBy).map(function(file) {
             return {
                 name: file
             };
