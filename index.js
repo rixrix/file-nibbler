@@ -38,6 +38,9 @@ function getFiles(pathToDir, filterBy) {
  * Takes care of munching your files in a manner that you won't hit the "Open Files" limit of your operating system.
  * We'll make use of async.js functionality called `queue`. See README for more details
  *
+ * @NOTE
+ *      - https://github.com/caolan/async/issues/1266#issuecomment-267103051
+ *
  * @param {string} pathToDir - Path to the files folder
  * @param {requestCallback} callback - A user-defined function that gets called in the queue. It will receive the value of the array that's being processed in the queue, in this case the filename
  * @param {Object[]} option - optional parameters
@@ -45,7 +48,7 @@ function getFiles(pathToDir, filterBy) {
  * @param {number} option[].concurrencyLevel - Sets the queue concurrency level when processing files
  * @returns {Object} promise - returns a Promise
  */
-exports.nibbler = function(pathToDir, callback, option) {
+exports.nibbler = function(pathToDir, option, callback) {
     var _option = option || {};
 
     _option.concurrencyLevel = _option.concurrencyLevel || DEFAULT_CONCURRENCY_LEVEL;
@@ -56,13 +59,18 @@ exports.nibbler = function(pathToDir, callback, option) {
     return new Promise(function(resolve, reject) {
         var queue = async.queue(function(task, next) {
 
-            // @NOTE: call user function.
-            //        I have a feeling that this will crap out at some point eg. when the callback is async,
-            //        right now my use-case is sync-mode. FYI
-            callback(task.name);
+            // The user-defined callback is a Promise object
+            if (typeof callback() === 'object' && typeof callback().then === 'function') {
+                Promise.resolve(callback(task.name))
+                .then(function() {
+                    async.setImmediate(next, null);
+                });
+            } else {
+                // @NOTE: I have a feeling that this will crap out at some point but we'll call the callback for you anyway
+                callback(task.name);
+                async.setImmediate(next, null);
+            }
 
-            //@NOTE https://github.com/caolan/async/issues/1266#issuecomment-267103051
-            async.setImmediate(next, null);
         }, _option.concurrencyLevel);
 
         // batch process the files by dropping it into an array
