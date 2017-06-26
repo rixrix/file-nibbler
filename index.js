@@ -42,14 +42,19 @@ function getFiles(pathToDir, filterBy) {
  *      - https://github.com/caolan/async/issues/1266#issuecomment-267103051
  *
  * @param {string} pathToDir - Path to the files folder
- * @param {requestCallback} callback - A user-defined function that gets called in the queue. It will receive the value of the array that's being processed in the queue, in this case the filename
  * @param {Object[]} options - optionsal parameters
  * @param {string} options[].filterBy - A regex-based flag for filtering out uneeded files otherwise returns all the files.
  * @param {number} options[].concurrencyLevel - Sets the queue concurrency level when processing files
+ * @param {requestCallback} callback - A user-defined function that gets called in the queue. It will receive the value of the array that's being processed in the queue, in this case the filename
  * @returns {Object} promise - returns a Promise
  */
 exports.nibbler = function(pathToDir, options, callback) {
-    var _options = options || {};
+    var _options = options && typeof options !== 'function'
+        ? options
+        : {};
+    var callback = options && typeof options !== 'function'
+        ? callback
+        : options;
 
     _options.concurrencyLevel = _options.concurrencyLevel || DEFAULT_CONCURRENCY_LEVEL;
     _options.filterBy = _options.filterBy
