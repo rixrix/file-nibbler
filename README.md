@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/rixrix/file-nibbler.svg?branch=master)](https://travis-ci.org/rixrix/file-nibbler)
+[![npm version](https://badge.fury.io/js/file-nibbler.svg)](https://badge.fury.io/js/file-nibbler)
+
 # Nibbler
 
 > /nɪb(ə)lə/ is a tool for cutting sheet metal with minimal distortion.
